@@ -1,0 +1,9 @@
+<odoo>
+    <data>
+      <record id='012DEV' model='res.partner'>
+        <field name='name'>Pablo Martínez Sánchez</field>
+        <field name='access_code'>12345677E</field>
+        <field name='is_dev'>True</field>
+      </record>
+    </data>
+</odoo>
