@@ -3,6 +3,7 @@
     
 
     <!-- explicit list view definition -->
+    <!--
     <record model="ir.ui.view" id="manage.devs_partner_form">
       <field name="name">manage devs form</field>
       <field name="model">res.partner</field>
@@ -17,6 +18,11 @@
                 <field name="access_code"></field>
                 <field name="technologies"></field>
                 <field 
+                      name="developers" 
+                      domain="[('is_dev','=',True)]" 
+                      context="{'form_view_ref':'manage.devs_partner_form', 'default_is_dev':True}"
+                      widget="many2many_tags"></field>
+                <field 
                   name="tasks"
                   context="{'current_developer':active_id}"></field>
               </group>
@@ -24,20 +30,264 @@
           </page>
         </xpath>
       </field>
+    </record>-->
+
+    <!-- VISTAS LIST/TREE -->
+
+    <record model="ir.ui.view" id="nutrete.cliente_list">
+      <field name="name">nutrete cliente list</field>
+      <field name="model">nutrete.cliente</field>
+      <field name="arch" type="xml">
+          <tree>
+              <field name="nombre"/>
+              <field name="apellidos"/>
+              <field name="dni"/>
+              <field name="foto"/>
+              <field name="altura"/>
+              <field name="peso"/>
+              <field name="imc"/>
+              <field name="historial"/>
+              <field name="motivo_consulta"/>
+          </tree>
+      </field>
     </record>
+
+  <record model="ir.ui.view" id="nutrete.dietista_list">
+    <field name="name">nutrete dietista list</field>
+    <field name="model">nutrete.dietista</field>
+    <field name="arch" type="xml">
+        <tree>
+            <field name="dni"/>
+            <field name="nombre"/>
+            <field name="apellidos"/>
+            <field name="foto"/>
+            <field name="especialidad"/>
+        </tree>
+    </field>
+  </record>
+
+  <record model="ir.ui.view" id="nutrete.nutricionista_list">
+    <field name="name">nutrete nutricionista list</field>
+    <field name="model">nutrete.nutricionista</field>
+    <field name="arch" type="xml">
+        <tree>
+            <field name="dni"/>
+            <field name="nombre"/>
+            <field name="apellidos"/>
+            <field name="foto"/>
+            <field name="especialidad"/>
+        </tree>
+    </field>
+  </record>
+
+  <record model="ir.ui.view" id="nutrete.dieta_list">
+    <field name="name">nutrete dieta list</field>
+    <field name="model">nutrete.dieta</field>
+    <field name="arch" type="xml">
+        <tree>
+            <field name="fecha_registro"/>
+            <field name="fecha_comienzo"/>
+            <field name="duracion"/>
+            <field name="fecha_final"/>
+        </tree>
+    </field>
+  </record>
+
+  <record model="ir.ui.view" id="nutrete.revision_list">
+    <field name="name">nutrete revision list</field>
+    <field name="model">nutrete.revision</field>
+    <field name="arch" type="xml">
+        <tree>
+            <field name="fecha_registro"/>
+            <field name="peso"/>
+            <field name="comentario_cliente"/>
+            <field name="evolucion"/>
+        </tree>
+    </field>
+  </record>
+
+  <record model="ir.ui.view" id="nutrete.taller_list">
+    <field name="name">nutrete taller list</field>
+    <field name="model">nutrete.taller</field>
+    <field name="arch" type="xml">
+        <tree>
+            <field name="fecha"/>
+            <field name="link"/>
+            <field name="tema"/>
+            <field name="duracion"/>
+        </tree>
+    </field>
+  </record>
+
+
     
     <!-- VISTAS FORM -->
+
+    <record model="ir.ui.view" id="nutrete.cliente_form">
+      <field name="name">nutrete cliente form</field>
+      <field name="model">nutrete.cliente</field>
+      <field name="arch" type="xml">
+          <form>
+              <group>
+                  <field name="nombre"/>
+                  <field name="apellidos"/>
+                  <field name="dni"/>
+                  <field name="foto"/>
+                  <field name="altura"/>
+                  <field name="peso"/>
+                  <field name="imc"/>
+                  <field name="historial"/>
+                  <field name="motivo_consulta"/>
+              </group>
+          </form>
+      </field>
+  </record>
+
+  <record model="ir.ui.view" id="nutrete.dietista_form">
+    <field name="name">nutrete dietista form</field>
+    <field name="model">nutrete.dietista</field>
+    <field name="arch" type="xml">
+        <form>
+          <group>
+            <field name="dni"/>
+            <field name="nombre"/>
+            <field name="apellidos"/>
+            <field name="foto"/>
+            <field name="especialidad"/>
+          </group>
+        </form>
+    </field>
+  </record>
+
+  <record model="ir.ui.view" id="nutrete.nutricionista_form">
+    <field name="name">nutrete nutricionista form</field>
+    <field name="model">nutrete.nutricionista</field>
+    <field name="arch" type="xml">
+        <form>
+          <group>
+            <field name="dni"/>
+            <field name="nombre"/>
+            <field name="apellidos"/>
+            <field name="foto"/>
+            <field name="especialidad"/>
+          </group>
+        </form>
+    </field>
+  </record>
+
+  <record model="ir.ui.view" id="nutrete.dieta_form">
+    <field name="name">nutrete dieta form</field>
+    <field name="model">nutrete.dieta</field>
+    <field name="arch" type="xml">
+        <form>
+          <group>
+            <field name="fecha_registro"/>
+            <field name="fecha_comienzo"/>
+            <field name="duracion"/>
+            <field name="fecha_final"/>
+          </group>
+        </form>
+    </field>
+  </record>
+
+  <record model="ir.ui.view" id="nutrete.revision_form">
+    <field name="name">nutrete revision form</field>
+    <field name="model">nutrete.revision</field>
+    <field name="arch" type="xml">
+        <form>
+          <group>
+            <field name="fecha_registro"/>
+            <field name="peso"/>
+            <field name="comentario_cliente"/>
+            <field name="evolucion"/>
+          </group>
+        </form>
+    </field>
+  </record>
+
+  <record model="ir.ui.view" id="nutrete.taller_form">
+    <field name="name">nutrete taller form</field>
+    <field name="model">nutrete.taller</field>
+    <field name="arch" type="xml">
+        <form>
+          <group>
+            <field name="fecha"/>
+            <field name="link"/>
+            <field name="tema"/>
+            <field name="duracion"/>
+          </group>
+        </form>
+    </field>
+  </record>
 
 
     <!-- VISTAS ACTION -->
 
+    <record model="ir.actions.act_window" id="nutrete.action_cliente_window">
+      <field name="name">nutrete cliente window</field>
+      <field name="res_model">nutrete.cliente</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="nutrete.action_dietista_window">
+      <field name="name">nutrete dietista window</field>
+      <field name="res_model">nutrete.dietista</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="nutrete.action_nutricionista_window">
+      <field name="name">nutrete nutricionista window</field>
+      <field name="res_model">nutrete.nutricionista</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="nutrete.action_dieta_window">
+      <field name="name">nutrete dieta window</field>
+      <field name="res_model">nutrete.dieta</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="nutrete.action_revision_window">
+      <field name="name">nutrete revision window</field>
+      <field name="res_model">nutrete.revision</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="nutrete.action_taller_window">
+      <field name="name">nutrete taller window</field>
+      <field name="res_model">nutrete.taller</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
 
     <!-- VISTAS MENUITEM -->
+
+    <menuitem name="Nutrete" id="nutrete.menu_root"/>
+
+    <menuitem name="Clientes" id="nutrete.menu_cliente_list" parent="nutrete.menu_root"
+              action="nutrete.action_cliente_window"/>
+
+    <menuitem name="Dietistas" id="nutrete.menu_dietista_list" parent="nutrete.menu_root"
+    action="nutrete.action_dietista_window"/>
+
+    <menuitem name="Nutricionistas" id="nutrete.menu_nutricionista_list" parent="nutrete.menu_root"
+    action="nutrete.action_nutricionista_window"/>
+
+    <menuitem name="Dietas" id="nutrete.menu_dieta_list" parent="nutrete.menu_root"
+    action="nutrete.action_dieta_window"/>
+
+    <menuitem name="Revisiones" id="nutrete.menu_revision_list" parent="nutrete.menu_root"
+    action="nutrete.action_revision_window"/>
+
+    <menuitem name="Talleres" id="nutrete.menu_taller_list" parent="nutrete.menu_root"
+    action="nutrete.action_taller_window"/>
+
+    
 
 
     <!-- actions opening views on models -->
 
-    
+    <!--
     <record model="ir.actions.act_window" id="manage.action_developer_window">
       <field name="name">manage project window</field>
       <field name="res_model">res.partner</field>
@@ -64,7 +314,7 @@
       <field name="name">manage technology window</field>
       <field name="res_model">manage.technology</field>
       <field name="view_mode">tree,form</field>
-    </record>
+    </record>-->
 
 
     <!-- server action to the one above -->
@@ -85,20 +335,20 @@
 
     <!-- Top menu item -->
 
-    <menuitem name="Manage" id="manage.menu_root"/>
+    
 
     <!-- menu categories -->
 
-    <menuitem name="Management" id="manage.menu_1" parent="manage.menu_root"/>
+    <!--<menuitem name="Management" id="manage.menu_1" parent="manage.menu_root"/>-->
     <!--menuitem name="Menu 2" id="manage.menu_2" parent="manage.menu_root"/>
 -->
     <!-- actions -->
-    
+    <!--
     <menuitem name="Technologies" id="manage.menu_1_technology_list" parent="manage.menu_1"
               action="manage.action_technology_window"/>
 
     <menuitem name="Devs" id="manage.menu_1_devs_list" parent="manage.menu_1"
-              action="manage.action_developer_window"/>
+              action="manage.action_developer_window"/>-->
               
     <!--menuitem name="Server to list" id="manage" parent="manage.menu_2"
               action="manage.action_server"/>
