@@ -236,3 +236,123 @@ class technology(models.Model):
                              column1="technology_id",
                              column2="task_id")
 
+
+class cliente(models.Model):
+    _name = 'nutrete.cliente'
+    _description = 'nutrete.cliente'
+    
+    dni = fields.Char()
+    nombre = fields.Char()
+    apellidos = fields.Char()
+    foto = fields.Image(max_width=200, max_height=200)
+    altura = fields.Integer()
+    peso = fields.Integer()
+    imc = fields.Integer(compute="_calc_imc")
+    historial = fields.Text()
+    motivoConsulta = fields.Text()
+    dietas = fields.One2many(string="Dietas", comodel_name="nutrete.dieta", inverse_name="cliente")
+
+    def _calc_imc(self):
+        for cliente in self:
+            try:
+                cliente.imc = cliente.peso / Math.pow(cliente.altura, 2)
+                _logger.info("Cálculo de imc exitoso")
+            except:
+                raise ValidationError(_("Cálculo de imc erróneo"))
+
+    @api.constrains('dni')
+    def _check_dni(self):
+        regex = re.compile('^[0-9]{8}[a-z]', re.I)
+        for cliente in self:
+            if regex.match(cliente.dni):
+                _logger.info('DNI con formato correcto')
+            else:
+                raise ValidationError('Formato de DNI incorrecto')
+            
+    _sql_constraints = [('dni_unique', 'unique(dni)', 'DNI ya registrado.')]
+
+
+
+class dietista(models.Model):
+    _name = 'nutrete.dietista'
+    _description = 'nutrete.dietista'
+    
+    dni = fields.Char()
+    nombre = fields.Char()
+    apellidos = fields.Char()
+    foto = fields.Image(max_width=200, max_height=200)
+    especialidad = fields.Char()
+    talleres = fields.One2many(string="Talleres", comodel_name="nutrete.taller", inverse_name="profesional")
+    dietas = fields.One2many(string="Dietas", comodel_name="nutrete.dieta", inverse_name="profesional")
+    
+
+class nutricionista(models.Model):
+    _name = 'nutrete.nutricionista'
+    _description = 'nutrete.nutricionista'
+    
+    dni = fields.Char()
+    nombre = fields.Char()
+    apellidos = fields.Char()
+    foto = fields.Image(max_width=200, max_height=200)
+    especialidad = fields.Char()
+    talleres = fields.One2many(string="Talleres", comodel_name="nutrete.taller", inverse_name="profesional")
+    dietas = fields.One2many(string="Dietas", comodel_name="nutrete.dieta", inverse_name="profesional")
+
+
+class dieta(models.Model):
+    _name = 'nutrete.dieta'
+    _description = 'nutrete.dieta'
+    
+    cliente = fields.Many2one("nutrete.cliente", ondelete="set null")
+    profesional = fields.Many2one("nutrete.nutricionista")
+    fecha_registro = fields.Datetime(default=lambda p: datetime.datetime.now())
+    fecha_comienzo = fields.Datetime()
+    duracion = fields.Integer(default=120)
+    fecha_final = fields.Datetime(compute="_get_fecha_final", store=True)
+    revisiones = fields.One2many(string="Revisiones", comodel_name="nutrete.revision", inverse_name="dieta")
+
+    @api.depends('fecha_comienzo', 'duracion')
+    def _get_fecha_final(self):
+        for dieta in self:
+            try:
+                if isinstance(dieta.fecha_comienzo, datetime.datetime) and dieta.duracion > 0:
+                    dieta.fecha_final = dieta.fecha_comienzo + datetime.timedelta(days=dieta.duracion)
+                else:
+                    dieta.fecha_final = dieta.fecha_comienzo
+                _logger.debug("Fecha final de dieta creada")
+            except:
+                raise ValidationError(_("Generación de fecha errónea"))
+
+
+class revision(models.Model):
+    _name = 'manage.project'
+    _description = 'manage.project'
+    
+    fecha_registro = fields.datetime()
+    peso = fields.Integer()
+    comentario_cliente = fields.Text()
+    evolucion = fields.Char()
+    dieta = fields.Many2one("nutrete.dieta", ondelete="set null")
+    cliente = tal, aquí iba lo de relacionar revision con dieta con cliente
+    profesional = fields.Many2one("nutrete.nutricionista", ondelete="set null")
+
+    def _get_cliente(self):
+        for revision in self:
+            cliente = None
+            for task in revision.tasks:
+                if not technologies:
+                    technologies = task.technologies
+                else:
+                    technologies = technologies + task.technologies
+            history.used_technologies = technologies
+
+
+class taller(models.Model):
+    _name = 'manage.project'
+    _description = 'manage.project'
+    
+    fecha = fields.Datetime()
+    link = fields.Char()
+    tema = fields.Char()
+    duracion = fields.Integer(default=60)
+    profesional = fields.Many2one("nutrete.nutricionista", ondelete="set null")
